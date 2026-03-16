@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitaLeggera™ — Tracker Ordini COD</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --verde: #2D6A4F;
+    --verde-med: #52B788;
+    --verde-light: #D8F3DC;
+    --arancio: #E07B39;
+    --rosso: #C0392B;
+    --bg: #F7F8F5;
+    --bg-card: #FFFFFF;
+    --bg-sec: #F1F3EF;
+    --text: #1A1A1A;
+    --text-sec: #5A6A60;
+    --border: rgba(0,0,0,0.10);
+    --border-med: rgba(0,0,0,0.18);
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; }
+
+  .app { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background: var(--verde);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.18);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: #74C69D; }
+  .topbar h1 { color: #fff; font-size: 15px; font-weight: 600; }
+  .topbar-date { color: #95D5B2; font-size: 12px; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; background: var(--bg-sec); border-radius: var(--radius); padding: 4px; }
+  .tab { flex: 1; padding: 7px 10px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; border-radius: 7px; transition: all 0.15s; }
+  .tab.active { background: var(--bg-card); color: var(--verde); box-shadow: 0 1px 4px rgba(0,0,0,0.10); }
+  .tab:hover:not(.active) { color: var(--text); background: rgba(0,0,0,0.04); }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.25rem; }
+  .kpi-card { background: var(--bg-card); border-radius: var(--radius); padding: 1rem 1.125rem; border: 0.5px solid var(--border); }
+  .kpi-label { font-size: 11px; color: var(--text-sec); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .kpi-value { font-size: 24px; font-weight: 600; color: var(--text); line-height: 1.1; }
+  .kpi-sub { font-size: 11px; margin-top: 3px; }
+  .ok { color: var(--verde); } .bad { color: var(--rosso); } .warn { color: var(--arancio); }
+
+  .section { background: var(--bg-card); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.125rem 1.25rem; margin-bottom: 1rem; }
+  .section-title { font-size: 11px; font-weight: 600; color: var(--text-sec); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.6px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .chart-wrap { position: relative; width: 100%; height: 200px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 7px 10px; color: var(--text-sec); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: var(--bg-sec); }
+  th:first-child { border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+  td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-sec); }
+
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .b-ok  { background: #D8F3DC; color: #2D6A4F; }
+  .b-bad { background: #FDECEA; color: #C0392B; }
+  .b-warn{ background: #FEF3E2; color: #9A5A1A; }
+  .b-blu { background: #E6F1FB; color: #185FA5; }
+
+  .form-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 0.5px solid var(--border); }
+  .form-group { display: flex; flex-direction: column; gap: 3px; }
+  .form-group label { font-size: 11px; color: var(--text-sec); font-weight: 500; }
+  .form-group input, .form-group select {
+    padding: 7px 10px; font-size: 13px;
+    border: 1px solid var(--border-med);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--verde-med); }
+  .form-group.wide input { width: 140px; }
+  .form-group.narrow input, .form-group.narrow select { width: 100px; }
+  .form-group.xnarrow input { width: 80px; }
+
+  .btn { padding: 8px 18px; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .btn-green { background: var(--verde); color: #fff; }
+  .btn-green:hover { background: #235C44; }
+  .btn-red { background: var(--rosso); color: #fff; }
+  .btn-red:hover { background: #A93226; }
+  .btn-del { background: none; border: none; color: var(--text-sec); cursor: pointer; font-size: 16px; padding: 2px 7px; border-radius: 5px; }
+  .btn-del:hover { color: var(--rosso); background: #FDECEA; }
+
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 13px; color: var(--text-sec); }
+  .setting-input { width: 100px; padding: 5px 9px; font-size: 13px; font-weight: 500; text-align: right; border: 1px solid var(--border-med); border-radius: 7px; background: var(--bg); color: var(--text); }
+  .setting-val { font-size: 14px; font-weight: 600; color: var(--verde); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .legend { display: flex; gap: 16px; margin-bottom: 10px; font-size: 12px; color: var(--text-sec); flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .empty { text-align: center; padding: 2rem; color: var(--text-sec); font-size: 13px; }
+
+  @media (max-width: 700px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .form-row { flex-direction: column; }
+    .form-group.wide input, .form-group.narrow input, .form-group.narrow select, .form-group.xnarrow input { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-dot"></div>
+      <h1>VitaLeggera™ — Tracker Ordini COD</h1>
+    </div>
+    <span class="topbar-date" id="data-oggi"></span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+    <button class="tab" onclick="switchTab('ordini',this)">📦 Ordini</button>
+    <button class="tab" onclick="switchTab('campagne',this)">📣 Campagne</button>
+    <button class="tab" onclick="switchTab('impostazioni',this)">⚙️ Impostazioni</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="tab-content active" id="tab-dashboard">
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <div class="two-col">
+      <div class="section">
+        <div class="section-title">Ordini per giorno</div>
+        <div class="chart-wrap"><canvas id="chart-ordini"></canvas></div>
+      </div>
+      <div class="section">
+        <div class="section-title">CPO vs target</div>
+        <div class="chart-wrap"><canvas id="chart-cpo"></canvas></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Ultimi ordini</div>
+      <table id="table-ultimi"></table>
+    </div>
+  </div>
+
+  <!-- ORDINI -->
+  <div class="tab-content" id="tab-ordini">
+    <div class="section">
+      <div class="section-title">Tutti gli ordini</div>
+      <div style="overflow-x:auto;">
+        <table id="table-ordini-full"></table>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Data</label><input type="date" id="in-data"></div>
+        <div class="form-group wide"><label>Cliente</label><input type="text" id="in-cliente" placeholder="Nome Cognome"></div>
+        <div class="form-group wide"><label>Prodotto</label><input type="text" id="in-prodotto" placeholder="Es. Tappetino EMS"></div>
+        <div class="form-group xnarrow"><label>Importo €</label><input type="number" id="in-importo" placeholder="39.90" step="0.01"></div>
+        <div class="form-group xnarrow"><label>Spend €</label><input type="number" id="in-spend" placeholder="38.00" step="0.01"></div>
+        <div class="form-group narrow">
+          <label>Stato</label>
+          <select id="in-stato">
+            <option>In attesa</option>
+            <option>Consegnato</option>
+            <option>Rifiutato</option>
+            <option>Reso</option>
+          </select>
+        </div>
+        <div class="form-group" style="justify-content:flex-end">
+          <label>&nbsp;</label>
+          <button class="btn btn-green" onclick="aggiungiOrdine()">+ Aggiungi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMPAGNE -->
+  <div class="tab-content" id="tab-campagne">
+    <div class="section">
+      <div class="section-title">Performance campagne</div>
+      <div class="legend">
+        <span><span class="ldot" style="background:#52B788"></span>Risultato netto (€)</span>
+        <span><span class="ldot" style="background:#E07B39"></span>Spend (€)</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chart-campagne"></canvas></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Storico campagne</div>
+      <div style="overflow-x:auto;">
+        <table id="table-campagne"></table>
+      </div>
+      <div class="form-row">
+        <div class="form-group wide"><label>Periodo</label><input type="text" id="c-periodo" placeholder="Es. Mar 2026"></div>
+        <div class="form-group wide"><label>Prodotto</label><input type="text" id="c-prodotto" placeholder="Tappetino EMS"></div>
+        <div class="form-group xnarrow"><label>Spend €</label><input type="number" id="c-spend" step="0.01"></div>
+        <div class="form-group xnarrow"><label>Ordini</label><input type="number" id="c-ordini"></div>
+        <div class="form-group xnarrow"><label>Giorni</label><input type="number" id="c-giorni"></div>
+        <div class="form-group" style="justify-content:flex-end">
+          <label>&nbsp;</label>
+          <button class="btn btn-green" onclick="aggiungiCampagna()">+ Aggiungi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPOSTAZIONI -->
+  <div class="tab-content" id="tab-impostazioni">
+    <div class="section">
+      <div class="section-title">Parametri negozio</div>
+      <div class="settings-grid">
+        <div>
+          <div class="setting-row"><span class="setting-label">Prezzo vendita (€)</span><input class="setting-input" id="set-prezzo" type="number" value="39.90" step="0.01" onchange="salvaImpostazioni()"></div>
+          <div class="setting-row"><span class="setting-label">Costo prodotto (€)</span><input class="setting-input" id="set-costo" type="number" value="15.10" step="0.01" onchange="salvaImpostazioni()"></div>
+          <div class="setting-row"><span class="setting-label">Target CPO max (€)</span><input class="setting-input" id="set-cpo-target" type="number" value="24.80" step="0.01" onchange="salvaImpostazioni()"></div>
+          <div class="setting-row"><span class="setting-label">Budget giornaliero (€)</span><input class="setting-input" id="set-budget" type="number" value="38.00" step="0.01" onchange="salvaImpostazioni()"></div>
+        </div>
+        <div>
+          <div class="setting-row"><span class="setting-label">Margine lordo/ordine</span><span class="setting-val" id="set-margine">€24.80</span></div>
+          <div class="setting-row"><span class="setting-label">Break-even CPO</span><span class="setting-val" id="set-be">€24.80</span></div>
+          <div class="setting-row"><span class="setting-label">ROAS break-even</span><span class="setting-val" id="set-roas-be">1.61x</span></div>
+          <div class="setting-row"><span class="setting-label">Ordini/giorno necessari</span><span class="setting-val" id="set-ord-day">2</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Gestione dati</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-green" onclick="esportaCSV()">⬇ Esporta CSV ordini</button>
+        <button class="btn btn-red" onclick="if(confirm('Resetta TUTTI i dati? Non si può annullare.'))resetDati()">🗑 Reset dati</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATI_DEFAULT_ORDINI = [
+  {id:1,data:'2026-02-17',cliente:'M. Rossi',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:2,data:'2026-02-19',cliente:'L. Ferrari',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:3,data:'2026-02-20',cliente:'G. Conti',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:4,data:'2026-02-22',cliente:'A. Bianchi',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:5,data:'2026-02-22',cliente:'P. Romano',prodotto:'Tutore posturale',importo:34.90,spend:38.41,stato:'Consegnato'},
+  {id:6,data:'2026-02-24',cliente:'C. Moretti',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:7,data:'2026-02-25',cliente:'F. Gallo',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:8,data:'2026-02-26',cliente:'S. Ricci',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Rifiutato'},
+  {id:9,data:'2026-02-27',cliente:'R. Martini',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:10,data:'2026-02-27',cliente:'T. Greco',prodotto:'Tutore posturale',importo:34.90,spend:38.41,stato:'Consegnato'},
+  {id:11,data:'2026-03-01',cliente:'V. Lombardi',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'Consegnato'},
+  {id:12,data:'2026-03-02',cliente:'E. Costa',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'In attesa'},
+  {id:13,data:'2026-03-04',cliente:'N. Esposito',prodotto:'Tappetino EMS',importo:39.90,spend:38.41,stato:'In attesa'},
+];
+const DATI_DEFAULT_CAMPAGNE = [
+  {id:1,periodo:'Feb-Mar 2026',spend:653,ordini:13,giorni:17,prodotto:'Tappetino EMS'},
+];
+
+function load(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+
+let ordini   = load('vl_ordini', DATI_DEFAULT_ORDINI);
+let campagne = load('vl_campagne', DATI_DEFAULT_CAMPAGNE);
+let imp      = load('vl_imp', {prezzo:39.90,costo:15.10,cpoTarget:24.80,budget:38.00});
+let nextId   = Math.max(0,...ordini.map(o=>o.id))+1;
+let nextCid  = Math.max(0,...campagne.map(c=>c.id))+1;
+let charts   = {};
+
+function salvaOrdini(){ save('vl_ordini',ordini); }
+function salvaCampagne(){ save('vl_campagne',campagne); }
+
+function salvaImpostazioni(){
+  imp.prezzo     = parseFloat(document.getElementById('set-prezzo').value)||39.90;
+  imp.costo      = parseFloat(document.getElementById('set-costo').value)||15.10;
+  imp.cpoTarget  = parseFloat(document.getElementById('set-cpo-target').value)||24.80;
+  imp.budget     = parseFloat(document.getElementById('set-budget').value)||38.00;
+  save('vl_imp',imp);
+  aggiornaSettingsCalc();
+  aggiorna();
+}
+
+function aggiornaSettingsCalc(){
+  const m = imp.prezzo - imp.costo;
+  document.getElementById('set-margine').textContent  = '€'+m.toFixed(2);
+  document.getElementById('set-be').textContent       = '€'+m.toFixed(2);
+  document.getElementById('set-roas-be').textContent  = (imp.prezzo/m).toFixed(2)+'x';
+  document.getElementById('set-ord-day').textContent  = Math.ceil(imp.budget/m);
+}
+
+function switchTab(nome,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+nome).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(aggiorna,50);
+}
+
+function statoStyle(s){
+  if(s==='Consegnato') return {cls:'b-ok', ic:'✓'};
+  if(s==='Rifiutato')  return {cls:'b-bad',ic:'✗'};
+  if(s==='Reso')       return {cls:'b-warn',ic:'↩'};
+  return {cls:'b-blu',ic:'…'};
+}
+
+function calcolaKPI(){
+  const m = imp.prezzo - imp.costo;
+  const consegnati  = ordini.filter(o=>o.stato==='Consegnato');
+  const validi      = ordini.filter(o=>o.stato!=='Rifiutato'&&o.stato!=='Reso');
+  const spendTot    = campagne.reduce((a,c)=>a+c.spend,0);
+  const cpo         = validi.length>0 ? spendTot/validi.length : 0;
+  const incasso     = consegnati.reduce((a,o)=>a+o.importo,0);
+  const margineL    = consegnati.length*m;
+  const netto       = margineL-spendTot;
+  return {m,consegnati:consegnati.length,totali:ordini.length,spendTot,validi:validi.length,cpo,incasso,margineL,netto};
+}
+
+function aggiornaKPI(){
+  const k=calcolaKPI();
+  const cok=k.cpo<=imp.cpoTarget;
+  document.getElementById('kpi-grid').innerHTML=`
+    <div class="kpi-card">
+      <div class="kpi-label">Ordini confermati</div>
+      <div class="kpi-value">${k.consegnati}</div>
+      <div class="kpi-sub ok">su ${k.totali} totali</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">CPO medio</div>
+      <div class="kpi-value ${cok?'ok':'bad'}">€${k.cpo.toFixed(2)}</div>
+      <div class="kpi-sub ${cok?'ok':'bad'}">target €${imp.cpoTarget.toFixed(2)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Risultato netto</div>
+      <div class="kpi-value ${k.netto>=0?'ok':'bad'}">€${k.netto.toFixed(0)}</div>
+      <div class="kpi-sub">incasso €${k.incasso.toFixed(0)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Spend totale</div>
+      <div class="kpi-value">€${k.spendTot.toFixed(0)}</div>
+      <div class="kpi-sub">marg. lordo €${k.margineL.toFixed(0)}</div>
+    </div>`;
+}
+
+function aggiornaUltimi(){
+  const el=document.getElementById('table-ultimi');
+  if(!el) return;
+  const ul=ordini.slice().reverse().slice(0,5);
+  if(!ul.length){ el.innerHTML='<tr><td class="empty" colspan="5">Nessun ordine ancora</td></tr>'; return; }
+  el.innerHTML=`<tr><th>Data</th><th>Cliente</th><th>Prodotto</th><th>Importo</th><th>Stato</th></tr>`
+    +ul.map(o=>{const s=statoStyle(o.stato);return`<tr><td>${o.data}</td><td>${o.cliente}</td><td>${o.prodotto}</td><td>€${o.importo.toFixed(2)}</td><td><span class="badge ${s.cls}">${s.ic} ${o.stato}</span></td></tr>`;}).join('');
+}
+
+function aggiornaTabOrdini(){
+  const el=document.getElementById('table-ordini-full');
+  if(!el) return;
+  const m=imp.prezzo-imp.costo;
+  if(!ordini.length){ el.innerHTML='<tr><td class="empty" colspan="8">Nessun ordine. Aggiungine uno sotto.</td></tr>'; return; }
+  el.innerHTML=`<tr><th>Data</th><th>Cliente</th><th>Prodotto</th><th>Importo</th><th>Spend</th><th>Margine</th><th>Stato</th><th></th></tr>`
+    +ordini.slice().reverse().map(o=>{
+      const s=statoStyle(o.stato);
+      const mg=o.stato==='Consegnato'?m:0;
+      return`<tr><td>${o.data}</td><td>${o.cliente}</td><td>${o.prodotto}</td><td>€${o.importo.toFixed(2)}</td><td>€${o.spend.toFixed(2)}</td><td style="color:${mg>0?'var(--verde)':'#aaa'}">€${mg.toFixed(2)}</td><td><span class="badge ${s.cls}">${o.stato}</span></td><td><button class="btn-del" onclick="eliminaOrdine(${o.id})" title="Elimina">×</button></td></tr>`;
+    }).join('');
+}
+
+function aggiornaTabCampagne(){
+  const el=document.getElementById('table-campagne');
+  if(!el) return;
+  const m=imp.prezzo-imp.costo;
+  if(!campagne.length){ el.innerHTML='<tr><td class="empty" colspan="9">Nessuna campagna.</td></tr>'; return; }
+  el.innerHTML=`<tr><th>Periodo</th><th>Prodotto</th><th>Spend</th><th>Ordini</th><th>Giorni</th><th>CPO</th><th>Marg. lordo</th><th>Netto</th><th></th></tr>`
+    +campagne.map(c=>{
+      const cpo=c.ordini>0?c.spend/c.ordini:0;
+      const ml=c.ordini*m;
+      const nt=ml-c.spend;
+      const ok=cpo<=imp.cpoTarget;
+      return`<tr>
+        <td>${c.periodo}</td><td>${c.prodotto}</td>
+        <td>€${c.spend.toFixed(2)}</td><td>${c.ordini}</td><td>${c.giorni}gg</td>
+        <td style="color:${ok?'var(--verde)':'var(--rosso)'}"><b>€${cpo.toFixed(2)}</b></td>
+        <td>€${ml.toFixed(2)}</td>
+        <td style="color:${nt>=0?'var(--verde)':'var(--rosso)'}"><b>€${nt.toFixed(2)}</b></td>
+        <td><button class="btn-del" onclick="eliminaCampagna(${c.id})">×</button></td>
+      </tr>`;
+    }).join('');
+}
+
+function aggiornaChartOrdini(){
+  const el=document.getElementById('chart-ordini');
+  if(!el) return;
+  const giorni=[...new Set(ordini.map(o=>o.data))].sort().slice(-12);
+  const vals=giorni.map(d=>ordini.filter(o=>o.data===d&&o.stato!=='Rifiutato'&&o.stato!=='Reso').length);
+  if(charts.ordini) charts.ordini.destroy();
+  charts.ordini=new Chart(el,{
+    type:'bar',
+    data:{labels:giorni.map(d=>d.slice(5)),datasets:[{label:'Ordini',data:vals,backgroundColor:'#52B788',borderRadius:5,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+}
+
+function aggiornaChartCPO(){
+  const el=document.getElementById('chart-cpo');
+  if(!el) return;
+  const giorni=[...new Set(ordini.map(o=>o.data))].sort().slice(-12);
+  const vals=giorni.map(d=>{
+    const go=ordini.filter(o=>o.data===d&&o.stato!=='Rifiutato'&&o.stato!=='Reso');
+    const sp=go.reduce((a,o)=>a+o.spend,0);
+    return go.length>0?parseFloat((sp/go.length).toFixed(2)):null;
+  });
+  if(charts.cpo) charts.cpo.destroy();
+  charts.cpo=new Chart(el,{
+    type:'line',
+    data:{labels:giorni.map(d=>d.slice(5)),datasets:[
+      {label:'CPO',data:vals,borderColor:'#2D6A4F',backgroundColor:'rgba(45,106,79,0.07)',tension:0.35,pointRadius:4,pointBackgroundColor:'#2D6A4F',fill:true},
+      {label:'Target',data:giorni.map(()=>imp.cpoTarget),borderColor:'#E07B39',borderDash:[5,4],pointRadius:0,borderWidth:1.5}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10},callback:v=>'€'+v},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+}
+
+function aggiornaChartCampagne(){
+  const el=document.getElementById('chart-campagne');
+  if(!el) return;
+  const m=imp.prezzo-imp.costo;
+  const labels=campagne.map(c=>c.periodo);
+  const netti=campagne.map(c=>parseFloat((c.ordini*m-c.spend).toFixed(2)));
+  const spends=campagne.map(c=>c.spend);
+  if(charts.campagne) charts.campagne.destroy();
+  charts.campagne=new Chart(el,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Netto €',data:netti,backgroundColor:netti.map(v=>v>=0?'#52B788':'#E57373'),borderRadius:5,borderSkipped:false},
+      {label:'Spend €',data:spends,backgroundColor:'#E07B39',borderRadius:5,borderSkipped:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:10},callback:v=>'€'+v},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+}
+
+function aggiorna(){
+  aggiornaKPI();
+  aggiornaUltimi();
+  aggiornaTabOrdini();
+  aggiornaTabCampagne();
+  aggiornaChartOrdini();
+  aggiornaChartCPO();
+  aggiornaChartCampagne();
+}
+
+function aggiungiOrdine(){
+  const data=document.getElementById('in-data').value;
+  const cliente=document.getElementById('in-cliente').value.trim();
+  const prodotto=document.getElementById('in-prodotto').value.trim();
+  const importo=parseFloat(document.getElementById('in-importo').value);
+  const spend=parseFloat(document.getElementById('in-spend').value);
+  const stato=document.getElementById('in-stato').value;
+  if(!data||!cliente||!prodotto||isNaN(importo)||isNaN(spend)){alert('Compila tutti i campi');return;}
+  ordini.push({id:nextId++,data,cliente,prodotto,importo,spend,stato});
+  salvaOrdini(); aggiorna();
+  ['in-cliente','in-prodotto','in-importo','in-spend'].forEach(id=>document.getElementById(id).value='');
+}
+
+function eliminaOrdine(id){
+  if(!confirm('Eliminare questo ordine?')) return;
+  ordini=ordini.filter(o=>o.id!==id); salvaOrdini(); aggiorna();
+}
+
+function aggiungiCampagna(){
+  const periodo=document.getElementById('c-periodo').value.trim();
+  const prodotto=document.getElementById('c-prodotto').value.trim();
+  const spend=parseFloat(document.getElementById('c-spend').value);
+  const ordin=parseInt(document.getElementById('c-ordini').value);
+  const giorni=parseInt(document.getElementById('c-giorni').value);
+  if(!periodo||!prodotto||isNaN(spend)||isNaN(ordin)||isNaN(giorni)){alert('Compila tutti i campi');return;}
+  campagne.push({id:nextCid++,periodo,spend,ordini:ordin,giorni,prodotto});
+  salvaCampagne(); aggiorna();
+  ['c-periodo','c-prodotto','c-spend','c-ordini','c-giorni'].forEach(id=>document.getElementById(id).value='');
+}
+
+function eliminaCampagna(id){
+  if(!confirm('Eliminare questa campagna?')) return;
+  campagne=campagne.filter(c=>c.id!==id); salvaCampagne(); aggiorna();
+}
+
+function esportaCSV(){
+  const rows=[['Data','Cliente','Prodotto','Importo €','Spend €','Stato']];
+  ordini.forEach(o=>rows.push([o.data,o.cliente,o.prodotto,o.importo,o.spend,o.stato]));
+  const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='VitaLeggera_Ordini.csv';
+  a.click();
+}
+
+function resetDati(){
+  ordini=[]; campagne=[];
+  localStorage.removeItem('vl_ordini');
+  localStorage.removeItem('vl_campagne');
+  aggiorna();
+}
+
+// Init
+document.getElementById('data-oggi').textContent=new Date().toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
+document.getElementById('in-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('set-prezzo').value=imp.prezzo;
+document.getElementById('set-costo').value=imp.costo;
+document.getElementById('set-cpo-target').value=imp.cpoTarget;
+document.getElementById('set-budget').value=imp.budget;
+aggiornaSettingsCalc();
+aggiorna();
+</script>
+</body>
+</html>
