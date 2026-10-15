@@ -149,57 +149,6 @@
         "cross_heading": "Completa la tua routine"
       }
     },
-    "highlights": {
-      "type": "hv-highlights",
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "title": "Pelle morbidissima al mattino",
-            "text": "La metto prima di andare a letto e al risveglio la pelle è morbida e fresca. Mai avuta così idratata.",
-            "author": "Paola M.",
-            "stars": 5
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "title": "Si dorme benissimo",
-            "text": "Avevo paura di non riuscire a dormirci, invece aderisce bene e non si sposta. Al mattino la tolgo e massaggio quello che resta.",
-            "author": "Antonella R.",
-            "stars": 5
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "title": "Il mio rituale della domenica",
-            "text": "La uso la domenica e il mercoledì sera. Il lunedì mattina mi trucco più volentieri.",
-            "author": "Federica L.",
-            "stars": 5
-          }
-        },
-        "review_4": {
-          "type": "review",
-          "settings": {
-            "title": "Comoda in due parti",
-            "text": "Essendo in due pezzi si sistema bene su fronte e guance. Facile anche per me che non sono pratica.",
-            "author": "Gabriella T.",
-            "stars": 5
-          }
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3",
-        "review_4"
-      ],
-      "settings": {
-        "heading": "Cosa dicono le nostre clienti",
-        "sample_label": "ESEMPIO – da sostituire"
-      }
-    },
     "timeline": {
       "type": "hv-timeline",
       "blocks": {
@@ -760,113 +709,11 @@
     },
     "reviews": {
       "type": "hv-reviews",
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "title": "Pelle morbidissima al mattino",
-            "text": "La metto prima di andare a letto e al risveglio la pelle è morbida e fresca. Mai avuta così idratata.",
-            "author": "Paola M.",
-            "stars": 5
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "title": "Si dorme benissimo",
-            "text": "Avevo paura di non riuscire a dormirci, invece aderisce bene e non si sposta. Al mattino la tolgo e massaggio quello che resta.",
-            "author": "Antonella R.",
-            "stars": 5
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "title": "Il mio rituale della domenica",
-            "text": "La uso la domenica e il mercoledì sera. Il lunedì mattina mi trucco più volentieri.",
-            "author": "Federica L.",
-            "stars": 5
-          }
-        },
-        "review_4": {
-          "type": "review",
-          "settings": {
-            "title": "Comoda in due parti",
-            "text": "Essendo in due pezzi si sistema bene su fronte e guance. Facile anche per me che non sono pratica.",
-            "author": "Gabriella T.",
-            "stars": 5
-          }
-        },
-        "review_5": {
-          "type": "review",
-          "settings": {
-            "title": "Presa la 2+1",
-            "text": "Ho preso l'offerta da 15 così ne ho regalata una confezione a mia figlia. Pagato alla consegna, tutto ok.",
-            "author": "Rossella P.",
-            "stars": 5
-          }
-        },
-        "review_6": {
-          "type": "review",
-          "settings": {
-            "title": "Effetto luminoso",
-            "text": "Al mattino la pelle è più luminosa e uniforme, me l'ha detto anche mia sorella.",
-            "author": "Daniela F.",
-            "stars": 5
-          }
-        },
-        "review_7": {
-          "type": "review",
-          "settings": {
-            "title": "Profumo leggero",
-            "text": "Non ha un profumo forte e non mi ha dato fastidio. Ho la pelle un po' sensibile e l'ho provata prima su una zona piccola.",
-            "author": "Monica B.",
-            "stars": 5
-          }
-        },
-        "review_8": {
-          "type": "review",
-          "settings": {
-            "title": "Consegna veloce",
-            "text": "Arrivata in tre giorni, il corriere ha chiamato prima. Ho pagato in contanti.",
-            "author": "Lucia G.",
-            "stars": 5
-          }
-        },
-        "review_9": {
-          "type": "review",
-          "settings": {
-            "title": "La uso anche mio marito",
-            "text": "Ha la pelle secca e l'ha voluta provare anche lui. Ora le finiamo il doppio più veloce!",
-            "author": "Sabrina C.",
-            "stars": 5
-          }
-        },
-        "review_10": {
-          "type": "review",
-          "settings": {
-            "title": "La ricompro",
-            "text": "Sono alla seconda confezione. Per il prezzo è un piccolo lusso che mi concedo due volte a settimana.",
-            "author": "Teresa V.",
-            "stars": 5
-          }
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3",
-        "review_4",
-        "review_5",
-        "review_6",
-        "review_7",
-        "review_8",
-        "review_9",
-        "review_10"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "heading": "Recensioni clienti",
-        "sample_label": "ESEMPIO – da sostituire",
+        "sample_label": "",
         "empty_title": "Sii la prima a recensirla",
         "empty_text": "Pubblichiamo solo recensioni di clienti che l'hanno acquistata davvero. Dopo la consegna ti scriviamo per chiederti com'è andata."
       }
@@ -950,7 +797,6 @@
   },
   "order": [
     "main",
-    "highlights",
     "timeline",
     "cta",
     "band_after_cta",
