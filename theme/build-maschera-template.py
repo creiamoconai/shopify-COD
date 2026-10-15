@@ -44,7 +44,7 @@ T={"sections":{
 "main":{"type":"hv-main-offerte","blocks":mb,"block_order":mo,"settings":{
  "tag":"Skincare coreana","tag2":"Da 2,80 € a maschera",
  "subtitle":"Pelle spenta e disidratata? La metti la sera, la togli al risveglio: viso idratato, morbido e luminoso.",
- "for_heading":"Fa per te se:","preselect":2,"badge_2":"Più scelta","badge_3":"Più conveniente",
+ "for_heading":"Fa per te se:","gift_image":"shopify://shop_images/maschera-6-come-si-usa.jpg","preselect":2,"badge_2":"Più scelta","badge_3":"Più conveniente",
  "was_note":"Barrato = prezzo delle confezioni singole","button_label":"Ordina ora",
  "bar_text":"2+1 in omaggio · Paghi alla consegna","delivery_min":2,"delivery_max":4,
  "return_text":"14 giorni dalla consegna per il recesso (buste chiuse)",
