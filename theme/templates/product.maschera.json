@@ -1,0 +1,162 @@
+{
+  "sections": {
+    "main": {
+      "type": "hv-main-offerte",
+      "blocks": {
+        "for_you_1": { "type": "for_you", "settings": { "text": "Al mattino vedi la pelle spenta e disidratata" } },
+        "for_you_2": { "type": "for_you", "settings": { "text": "Vuoi una skincare che lavora mentre dormi, senza fatica" } },
+        "for_you_3": { "type": "for_you", "settings": { "text": "Ti incuriosiscono le maschere coreane di cui parlano tutti" } },
+        "for_you_4": { "type": "for_you", "settings": { "text": "Cerchi un pensiero di bellezza da regalare (o da dividere con un'amica)" } },
+        "spec_1": { "type": "spec", "settings": { "label": "Tipo", "value": "Maschera viso notturna in idrogel, monouso" } },
+        "spec_2": { "type": "spec", "settings": { "label": "Ingredienti chiave", "value": "Collagene, Centella Asiatica (INCI completo sulla confezione)" } },
+        "spec_3": { "type": "spec", "settings": { "label": "Tempo di posa", "value": "Tutta la notte (minimo 3-4 ore)" } },
+        "spec_4": { "type": "spec", "settings": { "label": "Frequenza consigliata", "value": "2-3 volte a settimana" } },
+        "spec_5": { "type": "spec", "settings": { "label": "Per chi", "value": "Donna e uomo, tutti i tipi di pelle" } },
+        "spec_6": { "type": "spec", "settings": { "label": "Nella confezione", "value": "5 maschere in busta singola" } },
+        "spec_7": { "type": "spec", "settings": { "label": "Tipo di prodotto", "value": "Cosmetico. Non è un trattamento medico" } },
+        "perk_1": { "type": "perk", "settings": { "text": "Le confezioni in omaggio sono già nel prezzo, nessun codice" } },
+        "perk_2": { "type": "perk", "settings": { "text": "Spedizione tracciata e gratuita, consegna in 2-4 giorni lavorativi" } },
+        "cross_1": { "type": "cross", "settings": { "product": "belliva", "hook": "Vuoi completare il rituale serale?", "text": "Face & Neck LED con 7 modalità e il Siero in omaggio." } }
+      },
+      "block_order": ["for_you_1","for_you_2","for_you_3","for_you_4","spec_1","spec_2","spec_3","spec_4","spec_5","spec_6","spec_7","perk_1","perk_2","cross_1"],
+      "settings": {
+        "tag": "Skincare coreana",
+        "tag2": "Da 2,80 € a maschera",
+        "subtitle": "La applichi la sera, la togli al mattino. Pelle idratata e luminosa al risveglio.",
+        "for_heading": "Ideale per te se:",
+        "preselect": 2,
+        "badge_2": "Più scelta",
+        "badge_3": "Più conveniente",
+        "was_note": "Barrato = prezzo delle confezioni singole",
+        "button_label": "Ordina ora",
+        "bar_text": "2+1 in omaggio · Pagamento alla consegna",
+        "delivery_min": 2,
+        "delivery_max": 4,
+        "return_text": "14 giorni dalla consegna per il recesso (buste chiuse)",
+        "cod_title": "Paga alla consegna",
+        "cod_text": "Paghi il corriere quando ricevi il pacco.",
+        "cross_heading": "Completa la tua routine"
+      }
+    },
+    "timeline": {
+      "type": "hv-timeline",
+      "blocks": {
+        "step_1": { "type": "step", "settings": { "label": "SERA 1", "title": "PROVA", "points": "Pelle pulita e asciutta\nApplichi la maschera e vai a dormire\nAl mattino la togli e massaggi l'essenza rimasta", "asset": "", "index": 1 } },
+        "step_2": { "type": "step", "settings": { "label": "SETTIMANA 2", "title": "ABITUDINE", "points": "2-3 sere a settimana, sempre negli stessi giorni\nLa prima confezione da 5 è finita\nHai capito come la tua pelle risponde", "asset": "", "index": 2 } },
+        "step_3": { "type": "step", "settings": { "label": "SETTIMANA 6", "title": "RITUALE", "points": "Con il 2+1 arrivi a un mese e mezzo di routine\nLa maschera diventa il tuo appuntamento fisso\nContinua con costanza, sera dopo sera", "asset": "", "index": 3 } }
+      },
+      "block_order": ["step_1","step_2","step_3"],
+      "settings": {
+        "eyebrow": "La tua routine notturna",
+        "heading": "Come far diventare la maschera un'abitudine",
+        "text": "Conta la costanza: 2-3 notti a settimana. Ecco come organizzarti dalla prima sera.",
+        "button_label": "Inizia la tua routine"
+      }
+    },
+    "cta": {
+      "type": "hv-cta",
+      "settings": {
+        "heading": "Una confezione non basta per una routine",
+        "text": "Con l'offerta 2+1 ricevi 15 maschere a 49,90 €: circa un mese e mezzo di routine notturna, a 3,33 € a maschera.",
+        "button_label": "Scegli 2+1 in omaggio",
+        "select_two": true,
+        "note": "Pagamento alla consegna · Spedizione tracciata"
+      }
+    },
+    "features": {
+      "type": "hv-features",
+      "blocks": {
+        "item_1": { "type": "item", "settings": { "icon": "drop", "title": "Idratazione notturna", "text": "Resta in posa tutta la notte mentre dormi." } },
+        "item_2": { "type": "item", "settings": { "icon": "light", "title": "Effetto glow", "text": "Pelle più luminosa e uniforme al risveglio." } },
+        "item_3": { "type": "item", "settings": { "icon": "hand", "title": "Aderisce bene", "text": "La maschera in idrogel segue i contorni del viso." } },
+        "item_4": { "type": "item", "settings": { "icon": "clock", "title": "Zero fatica", "text": "Un minuto la sera, un minuto al mattino." } },
+        "item_5": { "type": "item", "settings": { "icon": "home", "title": "Skincare coreana a casa", "text": "La routine che va di moda, senza istituto." } }
+      },
+      "block_order": ["item_1","item_2","item_3","item_4","item_5"],
+      "settings": {
+        "band": "Maschera notturna • Collagene • Centella Asiatica • Skincare coreana",
+        "heading": "",
+        "text": "",
+        "grey": false
+      }
+    },
+    "tips": {
+      "type": "hv-tips",
+      "blocks": {
+        "tip_1": { "type": "tip", "settings": { "tip": "Struccati, lava il viso e asciugalo bene: la maschera aderisce meglio su pelle pulita.", "title": "Pelle pulita", "signature": "", "icon": "drop" } },
+        "tip_2": { "type": "tip", "settings": { "tip": "Stendi la maschera partendo dalla fronte e premi delicatamente con le dita perché aderisca.", "title": "Falla aderire", "signature": "", "icon": "hand" } },
+        "tip_3": { "type": "tip", "settings": { "tip": "Al mattino toglila e massaggia l'essenza rimasta finché si assorbe. Non serve risciacquare.", "title": "Al risveglio", "signature": "", "icon": "clock" } },
+        "tip_4": { "type": "tip", "settings": { "tip": "Prima volta? Fai una prova su una piccola zona di pelle. Non usarla su pelle irritata.", "title": "Prova prima", "signature": "", "icon": "heart" } }
+      },
+      "block_order": ["tip_1","tip_2","tip_3","tip_4"],
+      "settings": {
+        "heading": "Come usarla al meglio",
+        "text": "Piccoli accorgimenti per usarla bene fin dalla prima sera."
+      }
+    },
+    "perks": {
+      "type": "hv-features",
+      "blocks": {
+        "item_1": { "type": "item", "settings": { "icon": "cash", "title": "Pagamento alla consegna", "text": "Ordini con il modulo e paghi il corriere quando ricevi il pacco." } },
+        "item_2": { "type": "item", "settings": { "icon": "truck", "title": "Spedizione tracciata", "text": "Consegna in 2-4 giorni lavorativi, con numero di tracciamento." } },
+        "item_3": { "type": "item", "settings": { "icon": "return", "title": "14 giorni per il recesso", "text": "Hai 14 giorni dalla consegna. Per igiene, solo buste non aperte." } },
+        "item_4": { "type": "item", "settings": { "icon": "chat", "title": "Assistenza in italiano", "text": "Ti rispondiamo noi, prima e dopo l'acquisto." } },
+        "item_5": { "type": "item", "settings": { "icon": "heart", "title": "Omaggi già inclusi", "text": "Con 2+1 e 3+2 il prezzo che vedi è già quello finale, senza codici." } },
+        "item_6": { "type": "item", "settings": { "icon": "shield", "title": "Ordine sicuro", "text": "Nessun dato di carta richiesto." } }
+      },
+      "block_order": ["item_1","item_2","item_3","item_4","item_5","item_6"],
+      "settings": { "band": "", "heading": "Perché ordinare su Belliva", "text": "", "grey": true }
+    },
+    "compare": {
+      "type": "hv-compare",
+      "blocks": {
+        "tab_1": { "type": "tab", "settings": { "title": "Casa o istituto?", "text": "<p>Un trattamento viso in istituto ha il valore della consulenza di un professionista. La maschera notturna ti dà un gesto semplice da fare a casa, mentre dormi.</p>", "index": 0 } },
+        "tab_2": { "type": "tab", "settings": { "title": "Cosa ricevi", "text": "<p>Ogni confezione contiene 5 maschere in busta singola. Con l'offerta 2+1 ricevi 3 confezioni (15 maschere), con il 3+2 ne ricevi 5 (25 maschere).</p>", "index": 0 } },
+        "tab_3": { "type": "tab", "settings": { "title": "Pagamento e consegna", "text": "<p>Paghi alla consegna, al corriere. La spedizione è tracciata e arriva in 2-4 giorni lavorativi.</p>", "index": 0 } },
+        "row_4": { "type": "row", "settings": { "feature": "Lavora mentre dormi", "us": true, "them": false } },
+        "row_5": { "type": "row", "settings": { "feature": "Nessun appuntamento da prenotare", "us": true, "them": false } },
+        "row_6": { "type": "row", "settings": { "feature": "Meno di 3,50 € a maschera con il 2+1", "us": true, "them": false } },
+        "row_7": { "type": "row", "settings": { "feature": "Pagamento alla consegna", "us": true, "them": false } },
+        "row_8": { "type": "row", "settings": { "feature": "Valutazione di un professionista", "us": false, "them": true } }
+      },
+      "block_order": ["tab_1","tab_2","tab_3","row_4","row_5","row_6","row_7","row_8"],
+      "settings": { "heading": "La maschera a confronto", "us_label": "Maschera a casa", "them_label": "In istituto" }
+    },
+    "gallery": {
+      "type": "hv-gallery",
+      "blocks": {
+        "photo_1": { "type": "photo", "settings": { "asset": "", "index": 1 } },
+        "photo_2": { "type": "photo", "settings": { "asset": "", "index": 2 } },
+        "photo_3": { "type": "photo", "settings": { "asset": "", "index": 3 } },
+        "photo_4": { "type": "photo", "settings": { "asset": "", "index": 4 } }
+      },
+      "block_order": ["photo_1","photo_2","photo_3","photo_4"],
+      "settings": { "heading": "Il rituale notturno Belliva", "text": "La tua skincare, mentre dormi." }
+    },
+    "reviews": {
+      "type": "hv-reviews",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "Recensioni clienti",
+        "sample_label": "",
+        "empty_title": "Sii la prima a recensirla",
+        "empty_text": "È una novità Belliva: pubblichiamo solo recensioni di clienti che l'hanno acquistata davvero. Dopo la consegna ti scriviamo per chiederti com'è andata."
+      }
+    },
+    "faq": {
+      "type": "hv-faq",
+      "blocks": {
+        "question_1": { "type": "question", "settings": { "question": "Come funziona l'offerta 2+1?", "answer": "<p>Scegli «2+1 in OMAGGIO»: ricevi 3 confezioni (15 maschere) e paghi 49,90 €. Con «3+2» ricevi 5 confezioni (25 maschere) a 69,90 €. Il prezzo che vedi è già quello finale.</p>" } },
+        "question_2": { "type": "question", "settings": { "question": "Devo davvero tenerla tutta la notte?", "answer": "<p>È pensata per la notte, ma se ti dà fastidio dormirci puoi tenerla almeno 3-4 ore e toglierla prima di andare a letto.</p>" } },
+        "question_3": { "type": "question", "settings": { "question": "Quanto spesso posso usarla?", "answer": "<p>Consigliamo 2-3 volte a settimana. Una confezione da 5 dura circa due settimane.</p>" } },
+        "question_4": { "type": "question", "settings": { "question": "Va bene per la pelle sensibile?", "answer": "<p>Prima del primo utilizzo fai una prova su una piccola zona. Non applicarla su pelle irritata o lesa. In caso di arrossamento toglila e risciacqua. Trovi l'elenco completo degli ingredienti sulla confezione.</p>" } },
+        "question_5": { "type": "question", "settings": { "question": "Come posso pagare?", "answer": "<p>Paghi alla consegna: compili il modulo d'ordine e paghi il corriere quando ricevi il pacco.</p>" } },
+        "question_6": { "type": "question", "settings": { "question": "Posso restituirla?", "answer": "<p>Hai 14 giorni dalla consegna per il recesso. Trattandosi di un cosmetico, per motivi igienici possiamo accettare solo buste sigillate e non aperte.</p>" } }
+      },
+      "block_order": ["question_1","question_2","question_3","question_4","question_5","question_6"],
+      "settings": { "heading": "Domande frequenti" }
+    }
+  },
+  "order": ["main","timeline","cta","features","tips","perks","compare","gallery","reviews","faq"]
+}

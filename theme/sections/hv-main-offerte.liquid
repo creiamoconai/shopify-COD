@@ -1,0 +1,231 @@
+{%- comment -%} Copia di hv-main con box offerte a N varianti (es. 1 / 2+1 / 3+2). Ogni variante = un'offerta, prezzo e barrato presi dalla variante. {%- endcomment -%}
+{%- render 'hv-styles' -%}
+{%- assign pre = section.settings.preselect | default: 1 -%}
+{%- assign pre_v = product.selected_or_first_available_variant -%}
+{%- unless product.selected_variant -%}{%- for pv in product.variants -%}{%- if forloop.index == pre and pv.available -%}{%- assign pre_v = pv -%}{%- endif -%}{%- endfor -%}{%- endunless -%}
+<style>
+.hvm{padding:20px 0 56px}
+.hvm__grid{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}.hvm__grid>*{min-width:0}
+@media(min-width:990px){.hvm__grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:start}.hvm__gallery{position:sticky;top:20px}}
+.hvm__slides{display:grid;grid-auto-flow:column;grid-auto-columns:100%;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:24px;background:var(--hv-grey);scrollbar-width:none}
+.hvm__slides::-webkit-scrollbar{display:none}
+.hvm__slides figure{margin:0;scroll-snap-align:start;aspect-ratio:1/1}
+.hvm__slides img{width:100%;height:100%;object-fit:cover;display:block}
+.hvm__thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+.hvm__thumbs button{flex:0 0 68px;height:68px;padding:0;border:2px solid transparent;border-radius:12px;overflow:hidden;background:var(--hv-grey);cursor:pointer}
+.hvm__thumbs button.is-active{border-color:var(--hv-navy)}
+.hvm__thumbs img{width:100%;height:100%;object-fit:cover}
+.hvm__top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.hvm h1{font-size:clamp(1.9rem,4.4vw,2.7rem);font-weight:800}
+.hvm__sub{font-size:1.05rem;color:var(--hv-navy-600);margin-bottom:16px}
+.hvm__for{margin:18px 0;padding:18px 20px;border-radius:18px;background:var(--hv-pink-50)}
+.hvm__for h2{font-size:1.1rem;font-weight:800;margin-bottom:12px}
+.hvm__links{display:flex;gap:18px;margin:6px 0 20px;font-weight:700;font-size:.95rem}
+.hvm__links button,.hvm__links a{padding:0;border:0;background:none;color:var(--hv-navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit}
+.hvm__label{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;font-weight:800}
+.hvm__label span{font-weight:600;font-size:.85rem;color:var(--hv-navy-600)}
+.hvm__gift{margin:0 0 14px}.hvm__gift img{display:block;width:100%;height:auto;border-radius:18px}.hvm__offers{display:grid;gap:12px;margin:0 0 16px;border:0;padding:0}
+.hvm__offer{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:18px 16px;border:2px solid var(--hv-line);border-radius:18px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s}
+.hvm__offer.is-selected{border-color:var(--hv-navy);background:var(--hv-grey)}
+.hvm__offer input{width:20px;height:20px;accent-color:var(--hv-navy);margin:0}
+.hvm__offer strong{display:block;font-size:1.08rem;font-weight:800}
+.hvm__offer small{display:block;color:var(--hv-navy-600);font-size:.85rem;line-height:1.35}
+.hvm__offer .hvm__price{text-align:right}
+.hvm__offer .hvm__price b{display:block;font-size:1.25rem;font-weight:900}
+.hvm__offer .hvm__price s{font-size:.9rem;color:var(--hv-navy-600)}
+.hvm__offer .hvm__save{display:inline-block;margin-top:6px;padding:3px 8px;border-radius:6px;background:var(--hv-pink-100);color:var(--hv-pink-dark);font-weight:800;font-size:.78rem}
+.hvm__badge{position:absolute;top:-11px;left:16px;padding:4px 10px;border-radius:999px;background:var(--hv-pink);color:var(--hv-navy);font-size:.7rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.hvm__perks{margin:0 0 18px}
+.hvm__perks li{font-size:.95rem}
+.hvm__buy{margin-bottom:12px}
+.hvm__status{display:grid;gap:8px;margin:14px 0;font-size:.92rem}
+.hvm__status div{display:flex;gap:10px;align-items:center}
+.hvm__status svg{width:20px;height:20px;flex:0 0 20px;color:var(--hv-pink-dark)}
+.hvm__dot{width:10px;height:10px;border-radius:50%;background:var(--hv-green);box-shadow:0 0 0 4px rgba(76,175,80,.18);flex:0 0 10px;margin:0 5px}
+.hvm__cod{display:flex;gap:12px;align-items:flex-start;margin:16px 0;padding:14px 16px;border-radius:16px;background:var(--hv-purple-100)}
+.hvm__cod svg{width:26px;height:26px;flex:0 0 26px}
+.hvm__cod strong{display:block}
+.hvm__cod span{font-size:.9rem;color:var(--hv-navy-600)}
+.hvm__cross{margin-top:28px}
+.hvm__cross h2{font-size:1.25rem;font-weight:800;margin-bottom:12px}
+.hvm__xitem{display:grid;grid-template-columns:84px 1fr;gap:14px;align-items:center;padding:14px;border:1px solid var(--hv-line);border-radius:18px;background:#fff;margin-bottom:10px}
+.hvm__xitem img{width:84px;height:84px;object-fit:cover;border-radius:12px}
+.hvm__xitem strong{display:block;font-weight:800}
+.hvm__xitem em{display:block;font-style:normal;font-weight:700;color:var(--hv-pink-dark);font-size:.9rem}
+.hvm__xitem p{font-size:.88rem;color:var(--hv-navy-600);margin:4px 0 8px}
+.hvm__xrow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hvm__xrow button{min-height:38px;padding:8px 16px;font-size:.8rem}
+.hvm dialog{max-width:560px;width:calc(100% - 32px);border:0;border-radius:22px;padding:26px;color:var(--hv-navy)}
+.hvm dialog::backdrop{background:rgba(37,66,93,.55)}
+.hvm__specs{width:100%;border-collapse:collapse;margin:12px 0}
+.hvm__specs td{padding:10px 0;border-bottom:1px solid var(--hv-line);vertical-align:top}
+.hvm__specs td:first-child{font-weight:800;padding-right:14px;width:42%}
+</style>
+<section class="hv hvm">
+  <div class="hv-wrap hvm__grid">
+    <div class="hvm__gallery">
+      <div class="hvm__slides" data-hvm-slides>
+        {%- for image in product.images -%}
+          <figure>{%- if forloop.first -%}{{ image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '420,720,960,1200', sizes: '(min-width: 990px) 55vw, 100vw', alt: image.alt | default: product.title }}{%- else -%}{{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '420,720,960,1200', sizes: '(min-width: 990px) 55vw, 100vw', alt: image.alt | default: product.title }}{%- endif -%}</figure>
+        {%- endfor -%}
+      </div>
+      <div class="hvm__thumbs">
+        {%- for image in product.images -%}<button type="button" class="{% if forloop.first %}is-active{% endif %}" data-hvm-thumb="{{ forloop.index0 }}" aria-label="Foto {{ forloop.index }}">{{ image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>{%- endfor -%}
+      </div>
+    </div>
+
+    <div class="hvm__info">
+      <div class="hvm__top">{%- if section.settings.tag != blank -%}<span class="hv-tag">{{ section.settings.tag }}</span>{%- endif -%}{%- if section.settings.tag2 != blank -%}<span class="hv-tag" style="background:var(--hv-navy);color:#fff">{{ section.settings.tag2 }}</span>{%- endif -%}</div>
+      <h1>{{ product.title }}</h1>
+      {%- if section.settings.subtitle != blank -%}<p class="hvm__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+      {%- assign fors = section.blocks | where: 'type', 'for_you' -%}
+      {%- if fors.size > 0 -%}
+      <div class="hvm__for"><h2>{{ section.settings.for_heading }}</h2><ul class="hv-check">{%- for block in fors -%}<li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>{%- endfor -%}</ul></div>
+      {%- endif -%}
+
+      <div class="hvm__links">
+        {%- assign specs = section.blocks | where: 'type', 'spec' -%}
+        {%- if specs.size > 0 -%}<button type="button" data-hvm-open="specs">Scheda tecnica</button>{%- endif -%}
+        <a href="#faq">Domande frequenti</a>
+      </div>
+
+      {%- if section.settings.gift_image != blank -%}{%- assign gift_alt = section.settings.gift_image.alt | default: product.title -%}<figure class="hvm__gift">{{ section.settings.gift_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(min-width: 990px) 45vw, 100vw', alt: gift_alt }}</figure>{%- endif -%}<div id="acquista">
+      {%- form 'product', product, class: 'hvm__form', data-hvm-form: '' -%}
+        <input type="hidden" name="id" value="{{ pre_v.id }}" data-hvm-id>
+        <input type="hidden" name="quantity" value="1" data-hvm-qty>
+        {%- if product.variants.size > 1 -%}
+        <p class="hvm__label">Scegli la tua offerta <span>Pagamento alla consegna</span></p>
+        <fieldset class="hvm__offers">
+          <legend class="visually-hidden">Scegli la tua offerta</legend>
+          {%- for pv in product.variants -%}
+          {%- assign badge = '' -%}
+          {%- if forloop.index == 2 -%}{%- assign badge = section.settings.badge_2 -%}{%- elsif forloop.index == 3 -%}{%- assign badge = section.settings.badge_3 -%}{%- endif -%}
+          {%- assign pv_was = 0 -%}{%- if pv.compare_at_price > pv.price -%}{%- assign pv_was = pv.compare_at_price -%}{%- endif -%}
+          <label class="hvm__offer{% if pv.id == pre_v.id %} is-selected{% endif %}" data-hvm-offer="{{ forloop.index }}">
+            {%- if badge != blank -%}<span class="hvm__badge">{{ badge }}</span>{%- endif -%}
+            <input type="radio" name="hvm_offer" value="{{ forloop.index }}" data-price="{{ pv.price | money }}" data-variant="{{ pv.id }}" data-was="{% if pv_was > 0 %}{{ pv_was | money }}{% endif %}"{% if pv.id == pre_v.id %} checked{% endif %}{% unless pv.available %} disabled{% endunless %}>
+            <span><strong>{{ pv.title }}</strong>{%- if pv_was > 0 -%}<small>{{ section.settings.was_note }}</small><span class="hvm__save">Risparmi {{ pv_was | minus: pv.price | money }}</span>{%- endif -%}</span>
+            <span class="hvm__price"><b>{{ pv.price | money }}</b>{% if pv_was > 0 %}<s>{{ pv_was | money }}</s>{% endif %}</span>
+          </label>
+          {%- endfor -%}
+        </fieldset>
+        {%- endif -%}
+        {%- assign perks = section.blocks | where: 'type', 'perk' -%}
+        {%- if perks.size > 0 -%}<ul class="hv-check hvm__perks">{%- for block in perks -%}<li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>{%- endfor -%}</ul>{%- endif -%}
+        {%- assign btn_was = 0 -%}{%- if pre_v.compare_at_price > pre_v.price -%}{%- assign btn_was = pre_v.compare_at_price -%}{%- endif -%}
+        <button class="hv-btn hv-btn--block hvm__buy" type="submit" name="add" {% unless product.available %}disabled{% endunless %}>
+          {%- if product.available -%}{{ section.settings.button_label }} · <span data-hvm-now>{{ pre_v.price | money }}</span> <s data-hvm-was>{% if btn_was > 0 %}{{ btn_was | money }}{% endif %}</s>{%- else -%}Esaurito{%- endif -%}
+        </button>
+      {%- endform -%}
+      </div>
+
+      <div class="hvm__status">
+        {%- if product.available -%}<div><span class="hvm__dot"></span><span><strong>Disponibile</strong> · pronto per la spedizione</span></div>{%- endif -%}
+        <div>{%- render 'hv-icon', icon: 'truck' -%}<span>Ordina oggi: consegna stimata <strong data-hvm-delivery data-min="{{ section.settings.delivery_min }}" data-max="{{ section.settings.delivery_max }}">in {{ section.settings.delivery_min }}-{{ section.settings.delivery_max }} giorni lavorativi</strong></span></div>
+        <div>{%- render 'hv-icon', icon: 'return' -%}<span>{{ section.settings.return_text }}</span></div>
+      </div>
+      <div class="hvm__cod">{%- render 'hv-icon', icon: 'cash' -%}<div><strong>{{ section.settings.cod_title }}</strong><span>{{ section.settings.cod_text }}</span></div></div>
+
+      {%- assign cross = section.blocks | where: 'type', 'cross' -%}
+      {%- if cross.size > 0 -%}
+      <div class="hvm__cross">
+        <h2>{{ section.settings.cross_heading }}</h2>
+        {%- for block in cross -%}{%- assign xp = block.settings.product -%}{%- if xp != blank and xp.id != product.id -%}
+        <div class="hvm__xitem" {{ block.shopify_attributes }}>
+          <a href="{{ xp.url }}">{{ xp.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: xp.title }}</a>
+          <div><strong>{{ xp.title }}</strong>{%- if block.settings.hook != blank -%}<em>{{ block.settings.hook }}</em>{%- endif -%}<p>{{ block.settings.text }}</p>
+            <div class="hvm__xrow"><span><b>{{ xp.price | money }}</b></span><button type="button" class="hv-btn" data-hvm-add="{{ xp.selected_or_first_available_variant.id }}" {% unless xp.available %}disabled{% endunless %}>Aggiungi</button></div>
+          </div>
+        </div>
+        {%- endif -%}{%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if specs.size > 0 -%}
+  <dialog data-hvm-dialog="specs">
+    <h2 style="font-size:1.4rem">Scheda tecnica</h2>
+    <table class="hvm__specs">{%- for block in specs -%}<tr {{ block.shopify_attributes }}><td>{{ block.settings.label }}</td><td>{{ block.settings.value }}</td></tr>{%- endfor -%}</table>
+    <form method="dialog"><button class="hv-btn hv-btn--block">Chiudi</button></form>
+  </dialog>
+  {%- endif -%}
+</section>
+
+{%- if product.available -%}
+<style>
+.hvbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;box-shadow:0 -8px 30px rgba(37,66,93,.14);transform:translateY(110%);transition:transform .25s}
+.hvbar.is-visible{transform:none}
+.hvbar__in{display:flex;align-items:center;gap:12px;padding:10px 0}
+.hvbar img{width:48px;height:48px;border-radius:10px;object-fit:cover}
+.hvbar__t{flex:1;min-width:0;font-weight:800;line-height:1.2}
+.hvbar__t span{display:block;font-weight:600;font-size:.85rem;color:var(--hv-navy-600)}
+.hvbar .hv-btn{min-height:46px;padding:10px 18px;font-size:.85rem}
+@media(max-width:600px){.hvbar__t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+</style>
+<div class="hv hvbar" data-hvbar><div class="hv-wrap hvbar__in">
+  {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+  <div class="hvbar__t"><b>{{ product.title }}</b><span>{%- if section.settings.bar_text != blank -%}{{ section.settings.bar_text }}{%- else -%}{{ product.price_min | money }} · Pagamento alla consegna{%- endif -%}</span></div>
+  <a class="hv-btn" href="#acquista">Ordina ora</a>
+</div></div>
+{%- endif -%}
+
+<script>
+(function(){
+  var root={{ routes.root_url | json }};
+  var slides=document.querySelector('[data-hvm-slides]');
+  var thumbs=document.querySelectorAll('[data-hvm-thumb]');
+  thumbs.forEach(function(t){t.addEventListener('click',function(){var i=+t.dataset.hvmThumb;slides.scrollTo({left:slides.clientWidth*i,behavior:'smooth'});});});
+  if(slides){slides.addEventListener('scroll',function(){var i=Math.round(slides.scrollLeft/slides.clientWidth);thumbs.forEach(function(t){t.classList.toggle('is-active',+t.dataset.hvmThumb===i);});},{passive:true});}
+  var form=document.querySelector('[data-hvm-form]');
+  if(form){
+    var idIn=form.querySelector('[data-hvm-id]'),now=form.querySelector('[data-hvm-now]'),was=form.querySelector('[data-hvm-was]');
+    form.querySelectorAll('input[name=hvm_offer]').forEach(function(r){r.addEventListener('change',function(){
+      idIn.value=r.dataset.variant;try{var u=new URL(window.location.href);u.searchParams.set('variant',r.dataset.variant);history.replaceState(history.state,'',u.toString());}catch(e){}idIn.dispatchEvent(new Event('change',{bubbles:true}));
+      if(now)now.textContent=r.dataset.price;if(was)was.textContent=r.dataset.was||'';
+      form.querySelectorAll('.hvm__offer').forEach(function(l){l.classList.toggle('is-selected',l.contains(r));});
+    });});
+  }
+  window.hvSelectTwo=function(){var o=document.querySelector('[data-hvm-offer="2"] input');if(o){o.checked=true;o.dispatchEvent(new Event('change',{bubbles:true}));}var a=document.getElementById('acquista');if(a)a.scrollIntoView({behavior:'smooth',block:'center'});};
+  document.querySelectorAll('[data-hvm-open]').forEach(function(b){b.addEventListener('click',function(){var d=document.querySelector('[data-hvm-dialog="'+b.dataset.hvmOpen+'"]');if(d&&d.showModal)d.showModal();});});
+  var del=document.querySelector('[data-hvm-delivery]');
+  if(del){var mn=+del.dataset.min||2,mx=+del.dataset.max||4;var add=function(n){var d=new Date(),c=0;while(c<n){d.setDate(d.getDate()+1);var w=d.getDay();if(w&&w!==6)c++;}return d;};var o={weekday:'long',day:'numeric',month:'long'};try{del.textContent='tra '+add(mn).toLocaleDateString('it-IT',o)+' e '+add(mx).toLocaleDateString('it-IT',o);}catch(e){}}
+  document.querySelectorAll('[data-hvm-add]').forEach(function(b){b.addEventListener('click',function(){
+    var label=b.textContent;b.disabled=true;b.textContent='…';
+    fetch(root+'cart/add.js',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({items:[{id:+b.dataset.hvmAdd,quantity:1}]})})
+      .then(function(r){if(!r.ok)throw 0;return fetch(root+'cart.js');}).then(function(r){return r.json();})
+      .then(function(c){b.textContent='Aggiunto ✓';document.querySelectorAll('.cart-count').forEach(function(e){e.textContent=c.item_count;});})
+      .catch(function(){b.textContent=label;b.disabled=false;});
+  });});
+  var bar=document.querySelector('[data-hvbar]'),box=document.getElementById('acquista');
+  if(bar&&box&&'IntersectionObserver' in window){new IntersectionObserver(function(e){e.forEach(function(x){bar.classList.toggle('is-visible',!x.isIntersecting&&x.boundingClientRect.top<0);});}).observe(box);}
+})();
+</script>
+{% schema %}
+{"name":"HV · Box acquisto (3 offerte)","settings":[
+{"type":"text","id":"tag","label":"Etichetta sopra il titolo","default":"Novità Belliva"},
+{"type":"text","id":"tag2","label":"Seconda etichetta (scura)"},
+{"type":"text","id":"subtitle","label":"Sottotitolo"},
+{"type":"text","id":"for_heading","label":"Titolo lista","default":"Ideale per te se:"},
+{"type":"header","content":"Offerte (una per variante)"},
+{"type":"image_picker","id":"gift_image","label":"Foto offerta sopra il prezzo"},
+{"type":"range","id":"preselect","label":"Offerta preselezionata (1, 2 o 3)","min":1,"max":3,"step":1,"default":2},
+{"type":"text","id":"badge_2","label":"Badge 2ª offerta","default":"Più scelta"},
+{"type":"text","id":"badge_3","label":"Badge 3ª offerta","default":"Più conveniente"},
+{"type":"text","id":"was_note","label":"Nota sotto le offerte con barrato","default":"Barrato = prezzo delle confezioni singole"},
+{"type":"text","id":"button_label","label":"Pulsante","default":"Ordina ora"},
+{"type":"text","id":"bar_text","label":"Testo barra fissa in basso"},
+{"type":"header","content":"Rassicurazioni"},
+{"type":"number","id":"delivery_min","label":"Consegna: giorni minimi","default":2},
+{"type":"number","id":"delivery_max","label":"Consegna: giorni massimi","default":4},
+{"type":"text","id":"return_text","label":"Testo recesso","default":"14 giorni dalla consegna per il recesso"},
+{"type":"text","id":"cod_title","label":"Titolo contrassegno","default":"Pagamento alla consegna"},
+{"type":"text","id":"cod_text","label":"Testo contrassegno","default":"Paghi il corriere quando ricevi il pacco."},
+{"type":"text","id":"cross_heading","label":"Titolo cross-sell","default":"Completa la tua routine"}],
+"blocks":[
+{"type":"for_you","name":"Ideale per te se","settings":[{"type":"text","id":"text","label":"Testo"}]},
+{"type":"spec","name":"Scheda tecnica","settings":[{"type":"text","id":"label","label":"Voce"},{"type":"text","id":"value","label":"Valore"}]},
+{"type":"perk","name":"Vantaggio offerte","settings":[{"type":"text","id":"text","label":"Testo"}]},
+{"type":"cross","name":"Prodotto da abbinare","settings":[{"type":"product","id":"product","label":"Prodotto"},{"type":"text","id":"hook","label":"Domanda"},{"type":"text","id":"text","label":"Testo"}]}]}
+{% endschema %}
