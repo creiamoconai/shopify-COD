@@ -36,14 +36,18 @@ Riquadro 3 (sfondo pesca): la stessa donna con una tazza di caffè, sorride guar
 In basso fascia arrotondata verde salvia con icona regalo e testo bianco: "Siero in omaggio · Paghi alla consegna".
 ```
 
-## VARIANTE C – "Regalo" (per spingere i 2 pezzi, utile verso Natale)
+## VARIANTE C – "Come dall'estetista, ma a casa" (stessa struttura, gancio risparmio)
+
+NB: l'angolo "regalo con la mamma" è già stato testato e ha fatto 0 ordini → non riproporlo.
 
 ```
-Crea un'immagine pubblicitaria verticale 4:5 per Facebook e Instagram, stile fotografico realistico e caldo.
-Due donne italiane, madre (circa 60 anni) e figlia (circa 35 anni), sedute sul divano in un salotto accogliente con luci calde, ognuna tiene in mano lo stesso apparecchio per viso e collo identico a quello allegato (bianco a forma di T, luci LED accese). Sul tavolino davanti due scatole regalo aperte con fiocco rosa.
-Testo grande in alto: "Uno per te, uno da regalare 🎁".
-Sotto più piccolo: "Il rituale LED per viso e collo".
-In basso fascia arrotondata rosa antico con testo bianco: "Siero in omaggio · Paghi alla consegna".
+Crea un'immagine pubblicitaria verticale 4:5 per Facebook e Instagram, stile fotografico realistico, luce calda.
+In cima una fascia con titolo grande: "Come dall'estetista. Ma a casa tua."
+Sotto, 3 riquadri verticali affiancati con angoli arrotondati:
+Riquadro 1 (sfondo rosa cipria): mano femminile che tiene l'apparecchio per viso e collo identico a quello allegato (bianco a forma di T, luci LED rosse accese, schermo con le modalità). Testo: "1. ACCENDI" e sotto "7 luci diverse".
+Riquadro 2 (sfondo tortora): donna italiana sui 45 anni, capelli castano scuro mossi, sul divano di casa in felpa comoda, passa l'apparecchio sul collo con luce blu accesa. Testo: "2. PASSALA" e sotto "su viso e collo".
+Riquadro 3 (sfondo verde salvia): la stessa donna che si guarda allo specchio sorridendo, pelle luminosa e naturale. Testo: "3. QUANDO VUOI TU" e sotto "niente appuntamenti, 10 minuti".
+In basso fascia arrotondata su tutta la larghezza con icona regalo e testo bianco: "Siero in omaggio · Paghi alla consegna".
 ```
 
 ---
@@ -89,7 +93,7 @@ Pulsante: `Acquista ora`
 Link: https://belliva.it/products/belliva
 
 Per la variante C cambiare la prima riga in:
-`Uno per te, uno da regalare 🎁 Il rituale LED che fa sentire coccolata chi lo riceve.`
+`Come dall'estetista, ma a casa tua e quando vuoi tu ✨ Niente appuntamenti, bastano 10 minuti la sera.`
 
 ---
 
